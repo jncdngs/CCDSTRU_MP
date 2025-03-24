@@ -2,6 +2,7 @@
 #include <conio.h>
 #define SIZE 4
 
+// Initializes the board to be empty
 void initBoard(char board[][SIZE])
 {
     int i, j;
@@ -11,6 +12,7 @@ void initBoard(char board[][SIZE])
             board[i][j] = ' ';
 }
 
+// Displays the board and positions of players
 void displayBoard(char board[][SIZE])
 {
     int i, j;
@@ -55,6 +57,7 @@ void displayBoard(char board[][SIZE])
     printf("\n");
 }
 
+// Gets row and column from user and checks if it is valid for the player type
 void getPos(char board[][SIZE], int *row, int *col, int player)
 {
     int valid = 0;
@@ -99,6 +102,7 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
     *col = colTemp;
 }
 
+// Checks if the game is over by comparing the board to the patterns
 int isGameOver(char board[][SIZE])
 {
     int i, j;
@@ -200,11 +204,14 @@ int main()
             go = !go;            
         }
         
+        // Check if game is over
         over = isGameOver(board);
     }
 
+    // Clear screen after game ends
     printf("\033[H\033[J\033[3J");
 
+    // Declare the winner
     if(over == 1)
         printf("\nUno wins!\n\n");
     else if(over == 2)
