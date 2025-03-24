@@ -2,9 +2,26 @@
 
 #define SIZE 4
 
-void displayBoard()
+void cls()
+{
+    printf("\033[H\033[J\033[3J");
+}
+
+void initBoard(int board[][SIZE])
 {
     int i, j;
+
+    for(i = 0; i < SIZE; i++)
+        for(j = 0; j < SIZE; j++)
+            board[i][j] = 0;
+}
+
+void displayBoard(int board[][SIZE])
+{
+    int i, j;
+    int row = 0;
+
+    printf("\nChoose a slot\n\n");
     
     for(i = 0; i < SIZE * 2 + 2; i++)
     {
@@ -31,9 +48,10 @@ void displayBoard()
             printf("%d  ", i / 2);
 
             for(j = 0; j < SIZE; j++)
-                printf("|   ");
+                printf("| %d ", board[row][j]);
             
             printf("|\n");
+            row++;
         }
     }
 
@@ -42,16 +60,51 @@ void displayBoard()
 
 int main()
 {
-    // int turn = 1;
-    // int go = 0;
-    // int over = 0;
+    int row = -1;
+    int col = -1;
 
-    // int uno[SIZE][SIZE] = {0};
-    // int dos[SIZE][SIZE] = {0};
-    // int tres[SIZE][SIZE] = {0};
-    // int free[SIZE][SIZE] = {0};
+    int turn = 1;
+    int go = 0;
+    int over = 0;
+    
+    int board[SIZE][SIZE];
 
-    displayBoard();
+    initBoard(board);
+    
+    while(!over)
+    {
+        displayBoard(board);
 
+        do
+        {
+            printf("Enter row: ");
+            scanf("%d", &row);
+        }    
+        while(row < 1 || row > 4);
+
+        do
+        {
+            printf("Enter column: ");
+            scanf("%d", &col);
+        }    
+        while(col < 1 || col > 4);
+
+        if(turn && go && board[col - 1][row - 1] == 0)
+        {
+            board[col - 1][row - 1] = 1;
+            turn = !turn;
+            go = !go;
+        }
+        else if(!turn && board[col - 1][row - 1] == 1)
+        {
+            board[col - 1][row - 1] = 0;
+            turn = !turn;
+        }
+        else if(turn && !go && board[col - 1][row - 1] == 0)
+        {
+            board[col - 1][row - 1] = 3;
+            go = !go;
+        }
+    }        
     return 0;
 }
