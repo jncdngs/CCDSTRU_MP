@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #define SIZE 4
 
 void cls()
@@ -60,6 +59,37 @@ void displayBoard(char board[][SIZE])
     printf("\n");
 }
 
+void getPos(char board[][SIZE], int *row, int *col, int player)
+{
+    int valid = 0;
+    int rowTemp, colTemp;
+
+    while(!valid)
+    {
+        do
+        {
+            printf("\nEnter row: ");
+            scanf("%d", &rowTemp);
+        }    
+        while(rowTemp < 1 || rowTemp > SIZE);
+
+        do
+        {
+            printf("Enter column: ");
+            scanf("%d", &colTemp);
+        }    
+        while(colTemp < 1 || colTemp > SIZE);
+
+        if((player == 1) && (board[rowTemp - 1][colTemp - 1] == ' '))
+            valid = 1;
+        else if((player == 2) && (board[rowTemp - 1][colTemp - 1] == '1' || board[rowTemp - 1][colTemp - 1] == '3'))
+            valid = 1;
+    }
+
+    *row = rowTemp;
+    *col = colTemp;
+}
+
 int isGameOver(char board[][SIZE])
 {
     int i, j;
@@ -103,35 +133,14 @@ int isGameOver(char board[][SIZE])
                 }
         }
     }
-    
-    // else if(((board[0][0] == '3' || board[0][0] == 'X') && 
-    //          (board[0][1] == '3' || board[0][1] == 'X') && 
-    //          (board[0][2] == '3' || board[0][2] == 'X') && 
-    //          (board[0][3] == '3' || board[0][3] == 'X')) || 
-
-    //         ((board[0][0] == '3' || board[0][0] == 'X') && 
-    //          (board[1][1] == '3' || board[1][1] == 'X') && 
-    //          (board[2][2] == '3' || board[2][2] == 'X') && 
-    //          (board[3][3] == '3' || board[3][3] == 'X')) || 
-
-    //         ((board[0][3] == '3' || board[0][3] == 'X') && 
-    //          (board[1][2] == '3' || board[1][2] == 'X') && 
-    //          (board[2][1] == '3' || board[2][1] == 'X') && 
-    //          (board[3][0] == '3' || board[3][0] == 'X')) || 
-    
-    //         ((board[3][0] == '3' || board[3][0] == 'X') && 
-    //          (board[3][1] == '3' || board[3][1] == 'X') && 
-    //          (board[3][2] == '3' || board[3][2] == 'X') && 
-    //          (board[3][3] == '3' || board[3][3] == 'X')))
-    //     over = 3;
 
     return over;
 }
 
 int main()
 {
-    int row;
-    int col;
+    int row = 1;
+    int col = 1;
 
     int turn = 1;
     int go = 0;
@@ -145,52 +154,53 @@ int main()
 
     while(!over)
     {
-        row = -1;
-        col = -1;
-
         displayBoard(board);
-
-        do
-        {
-            printf("Enter row: ");
-            scanf("%d", &row);
-        }    
-        while(row < 1 || row > 4);
-
-        do
-        {
-            printf("Enter column: ");
-            scanf("%d", &col);
-        }    
-        while(col < 1 || col > 4);
+        
+        if(turn)
+            getPos(board, &row, &col, 1);
+        else
+            getPos(board, &row, &col, 2);
 
         if(turn && go && board[row - 1][col - 1] == ' ')
         {
+            // getPos(board, &row, &col, 1);
+
             board[row - 1][col - 1] = '1';
             turn = !turn;
-            go = !go;
-
-            printf("\n\nTres turn\n");
-        }
-        else if(!turn)
-        {
-            if(board[row - 1][col - 1] == '1' || board[row - 1][col - 1] == '3')
-                board[row - 1][col - 1] = 'X';
-            
-            turn = !turn;
-
-            printf("\n\nUno turn\n");
-        }
-        else if(turn && !go && board[row - 1][col - 1] == ' ')
-        {
-            board[row - 1][col - 1] = '3';
             go = !go;
             
             printf("\n\nDos turn\n");
         }
-
+        else if(!turn)
+        {
+            // getPos(board, &row, &col, 2);
+            
+            if(board[row - 1][col - 1] == '1' || board[row - 1][col - 1] == '3')
+            board[row - 1][col - 1] = 'X';
+            
+            turn = !turn;
+            
+            printf("\n\nTres turn\n");
+        }
+        else if(turn && !go && board[row - 1][col - 1] == ' ')
+        {
+            // getPos(board, &row, &col, 3);
+            
+            board[row - 1][col - 1] = '3';
+            go = !go;
+            
+            printf("\n\nUno turn\n");
+        }
+        
         over = isGameOver(board);
     }
 
+    if(over == 1)
+        printf("Uno wins!\n\n");
+    else if(over == 2)
+        printf("Dos wins!\n\n");
+    else if(over == 3)
+        printf("Tres wins!\n\n");
+        
     return 0;
 }
