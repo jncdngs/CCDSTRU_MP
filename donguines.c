@@ -2,11 +2,6 @@
 #include <conio.h>
 #define SIZE 4
 
-void cls()
-{
-    printf("\033[H\033[J\033[3J");
-}
-
 void initBoard(char board[][SIZE])
 {
     int i, j;
@@ -166,6 +161,7 @@ int main()
     
     while(!over)
     {
+        printf("\033[H\033[J\033[3J");
         displayBoard(board);
         
         if(turn && go)
@@ -206,6 +202,8 @@ int main()
         
         over = isGameOver(board);
     }
+
+    printf("\033[H\033[J\033[3J");
 
     if(over == 1)
         printf("\nUno wins!\n\n");
