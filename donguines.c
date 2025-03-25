@@ -170,7 +170,7 @@ int main()
         
         if(turn && go)
         {
-            printf("\nIt is Uno's turn\n\n");
+            printf("It is Uno's turn\n\n");
             getPos(board, &row, &col, 1);
         }
         else if(turn && !go)
