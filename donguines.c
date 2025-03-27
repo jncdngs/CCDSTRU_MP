@@ -211,6 +211,8 @@ int main()
     // Clear screen after game ends
     printf("\033[H\033[J\033[3J");
 
+    displayBoard(board);
+
     // Declare the winner
     if(over == 1)
         printf("\nUno wins!\n\n");
