@@ -155,17 +155,17 @@ int isGameOver(char board[][SIZE])
             (board[0][2] == player || board[0][2] == 'X') && 
             (board[0][3] == player || board[0][3] == 'X')) || 
 
-            ((board[0][0] == player || board[0][0] == 'X') && 
+           ((board[0][0] == player || board[0][0] == 'X') && 
             (board[1][1] == player || board[1][1] == 'X') && 
             (board[2][2] == player || board[2][2] == 'X') && 
             (board[3][3] == player || board[3][3] == 'X')) || 
 
-            ((board[0][3] == player || board[0][3] == 'X') && 
+           ((board[0][3] == player || board[0][3] == 'X') && 
             (board[1][2] == player || board[1][2] == 'X') && 
             (board[2][1] == player || board[2][1] == 'X') && 
             (board[3][0] == player || board[3][0] == 'X')) || 
         
-            ((board[3][0] == player || board[3][0] == 'X') && 
+           ((board[3][0] == player || board[3][0] == 'X') && 
             (board[3][1] == player || board[3][1] == 'X') && 
             (board[3][2] == player || board[3][2] == 'X') && 
             (board[3][3] == player || board[3][3] == 'X')))
@@ -175,7 +175,7 @@ int isGameOver(char board[][SIZE])
             }
     }
     
-    if(full == 1)
+    if(full)
         over = 2;
 
     return over;
