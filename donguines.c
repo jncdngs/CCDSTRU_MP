@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #define SIZE 4
+#define CLS "\033[H\033[J\033[3J"
 
 // Initializes the board to be empty
 void initBoard(char board[][SIZE])
@@ -166,12 +167,6 @@ int isGameOver(char board[][SIZE])
     return over;
 }
 
-// Displays the how to play page
-void howToPlay()
-{
-
-}
-
 // Main game function
 int play(char board[][SIZE])
 {
@@ -184,9 +179,9 @@ int play(char board[][SIZE])
     
     while(!over)
     {
-        printf("\033[H\033[J\033[3J");
+        printf(CLS);
         displayTitle();
-        printf("\nChoose a slot\n\n");
+        printf("Choose a slot\n\n");
         displayBoard(board);
         
         if(turn && go)
@@ -227,19 +222,34 @@ int play(char board[][SIZE])
         over = isGameOver(board);
     }
 
+    printf(CLS);
+    displayTitle();
+    
+    // Declare the winner
+    displayBoard(board);
+    
+    if(over == 1)
+        printf("\nUno wins!\n\n");
+    else if(over == 2)
+        printf("\nDos wins!\n\n");
+    else if(over == 3)
+        printf("\nTres wins!\n\n");
+
+    printf("Press any key to return to the main menu...");
+    getch();
+
     return over;
 }
 
 int main()
 {   
     char board[SIZE][SIZE];
-    int over = 0;
-    int menu = -1;
+    int menu = 0;
     int error = 0;
 
     do
     {
-        printf("\033[H\033[J\033[3J");
+        printf(CLS);
         displayTitle();
 
         if(error)
@@ -248,8 +258,7 @@ int main()
         error = 0;
 
         printf("[1] Play game\n");
-        printf("[2] How to play\n");
-        printf("[3] Exit game\n\n");
+        printf("[2] Exit game\n\n");
         printf("Enter option: ");
 
         if(scanf("%d", &menu) != 1)
@@ -260,28 +269,8 @@ int main()
             case 1:
                 initBoard(board);
 
-                over = play(board);
-                
-                printf("\033[H\033[J\033[3J");
-                displayTitle();
-                
-                // Declare the winner
-                displayBoard(board);
-                
-                if(over == 1)
-                    printf("\nUno wins!\n\n");
-                else if(over == 2)
-                    printf("\nDos wins!\n\n");
-                else if(over == 3)
-                    printf("\nTres wins!\n\n");
-            
-                printf("Press any key to return to the main menu...");
-                getch();
+                play(board);
 
-                break;
-
-            case 2:
-                //howToPlay();
                 break;
 
             default:
@@ -289,9 +278,9 @@ int main()
                 break;
         }
     }
-    while(menu != 3);
+    while(menu != 2);
 
-    printf("\033[H\033[J\033[3J");
+    printf(CLS);
     displayTitle();
     printf("Thank you for playing UnoDosTres!\n\n");
     printf("Press any key to exit...");
