@@ -12,13 +12,21 @@ void initBoard(char board[][SIZE])
             board[i][j] = ' ';
 }
 
+// Displays the title ASCII art
+void displayTitle()
+{
+    printf(" _   _             ____           _____\n");
+    printf("| | | |_ __   ___ |  _ \\  ___  __|_   _| __ ___  ___\n");
+    printf("| | | | '_ \\ / _ \\| | | |/ _ \\/ __|| || '__/ _ \\/ __|\n");
+    printf("| |_| | | | | (_) | |_| | (_) \\__ \\| || | |  __/\\__ \\\n");
+    printf(" \\___/|_| |_|\\___/|____/ \\___/|___/|_||_|  \\___||___/\n\n");
+}
+
 // Displays the board and positions of players
 void displayBoard(char board[][SIZE])
 {
     int i, j;
     int row = 0;
-
-    printf("\nChoose a slot\n\n");
     
     for(i = 0; i < SIZE * 2 + 2; i++)
     {
@@ -73,7 +81,10 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
                 printf("\nInvalid\n\n");
                 
             printf("Enter row: ");
-            scanf("%d", &rowTemp);
+
+            if(scanf("%d", &rowTemp) != 1)
+                while(getchar() != '\n');
+
             error = 1;
         }    
         while(rowTemp < 1 || rowTemp > SIZE);
@@ -85,13 +96,18 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
             printf("\nInvalid\n\n");
             
             printf("Enter column: ");
-            scanf("%d", &colTemp);
+
+            if(scanf("%d", &colTemp) != 1)
+                while(getchar() != '\n');
+
             error = 1;
         }    
         while(colTemp < 1 || colTemp > SIZE);
 
-        if((player == 1) && (board[rowTemp - 1][colTemp - 1] == ' '))
+        // If player is uno or tres, check if position is valid
+        if((player == 1 || player == 3) && (board[rowTemp - 1][colTemp - 1] == ' '))
             valid = 1;
+        // If player is dos, check if position is valid
         else if((player == 2) && (board[rowTemp - 1][colTemp - 1] == '1' || board[rowTemp - 1][colTemp - 1] == '3'))
             valid = 1;
         else
@@ -150,7 +166,7 @@ int isGameOver(char board[][SIZE])
     return over;
 }
 
-int main()
+int play(char board[][SIZE])
 {
     int row = 1;
     int col = 1;
@@ -159,13 +175,11 @@ int main()
     int go = 0;
     int over = 0;
     
-    char board[SIZE][SIZE];
-
-    initBoard(board);
-    
     while(!over)
     {
         printf("\033[H\033[J\033[3J");
+        displayTitle();
+        printf("\nChoose a slot\n\n");
         displayBoard(board);
         
         if(turn && go)
@@ -176,7 +190,7 @@ int main()
         else if(turn && !go)
         {
             printf("It is Tres's turn\n\n");
-            getPos(board, &row, &col, 1);
+            getPos(board, &row, &col, 3);
         }
         else
         {
@@ -193,9 +207,7 @@ int main()
         }
         else if(!turn)
         {
-            // if(board[row - 1][col - 1] == '1' || board[row - 1][col - 1] == '3')
-                board[row - 1][col - 1] = 'X';
-
+            board[row - 1][col - 1] = 'X';
             turn = !turn;
         }
         else if(turn && !go && board[row - 1][col - 1] == ' ')
@@ -208,20 +220,69 @@ int main()
         over = isGameOver(board);
     }
 
-    // Clear screen after game ends
-    printf("\033[H\033[J\033[3J");
+    return over;
+}
 
-    displayBoard(board);
+int main()
+{   
+    char board[SIZE][SIZE];
+    int over = 0;
+    int menu = -1;
+    int error = 0;
 
-    // Declare the winner
-    if(over == 1)
-        printf("\nUno wins!\n\n");
-    else if(over == 2)
-        printf("\nDos wins!\n\n");
-    else if(over == 3)
-        printf("\nTres wins!\n\n");
+    do
+    {
+        printf("\033[H\033[J\033[3J");
+        displayTitle();
+        printf("[1] Play game\n");
+        printf("[2] How to play\n");
+        printf("[3] Exit game\n\n");
+        printf("Enter option: ");
 
-    getch();
+        if(scanf("%d", &menu) != 1)
+            while(getchar() != '\n');
         
+        switch(menu)
+        {
+        case 1:
+            initBoard(board);
+
+            over = play(board);
+            
+            printf("\033[H\033[J\033[3J");
+            displayTitle();
+            
+            // Declare the winner
+            displayBoard(board);
+            
+            if(over == 1)
+                printf("\nUno wins!\n\n");
+            else if(over == 2)
+                printf("\nDos wins!\n\n");
+            else if(over == 3)
+                printf("\nTres wins!\n\n");
+        
+            printf("Press any key to return to the main menu...");
+            getch();
+
+            break;
+
+        case 2:
+            //howToPlay();
+            break;
+
+        default:
+            error = 1;
+            break;
+        }
+    }
+    while(menu == 1 || menu == 2);
+
+    printf("\033[H\033[J\033[3J");
+    displayTitle();
+    printf("Thank you for playing UnoDosTres!\n\n");
+    printf("Press any key to exit...");
+    getch();
+
     return 0;
 }
