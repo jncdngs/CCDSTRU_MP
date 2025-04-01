@@ -147,38 +147,36 @@ int isGameOver(char board[][SIZE])
         for(j = 0; j < SIZE; j++)
             if(board[i][j] == ' ')
                 full = 0;
+
+    for(player = '1'; player <= '3'; player += 2)
+    {
+        if(((board[0][0] == player || board[0][0] == 'X') && 
+            (board[0][1] == player || board[0][1] == 'X') && 
+            (board[0][2] == player || board[0][2] == 'X') && 
+            (board[0][3] == player || board[0][3] == 'X')) || 
+
+            ((board[0][0] == player || board[0][0] == 'X') && 
+            (board[1][1] == player || board[1][1] == 'X') && 
+            (board[2][2] == player || board[2][2] == 'X') && 
+            (board[3][3] == player || board[3][3] == 'X')) || 
+
+            ((board[0][3] == player || board[0][3] == 'X') && 
+            (board[1][2] == player || board[1][2] == 'X') && 
+            (board[2][1] == player || board[2][1] == 'X') && 
+            (board[3][0] == player || board[3][0] == 'X')) || 
+        
+            ((board[3][0] == player || board[3][0] == 'X') && 
+            (board[3][1] == player || board[3][1] == 'X') && 
+            (board[3][2] == player || board[3][2] == 'X') && 
+            (board[3][3] == player || board[3][3] == 'X')))
+            {
+                over = player - '0';
+                break;
+            }
+    }
     
     if(full == 1)
         over = 2;
-    else
-    {
-        for(player = '1'; player <= '3'; player += 2)
-        {
-            if(((board[0][0] == player || board[0][0] == 'X') && 
-                (board[0][1] == player || board[0][1] == 'X') && 
-                (board[0][2] == player || board[0][2] == 'X') && 
-                (board[0][3] == player || board[0][3] == 'X')) || 
-    
-               ((board[0][0] == player || board[0][0] == 'X') && 
-                (board[1][1] == player || board[1][1] == 'X') && 
-                (board[2][2] == player || board[2][2] == 'X') && 
-                (board[3][3] == player || board[3][3] == 'X')) || 
-    
-               ((board[0][3] == player || board[0][3] == 'X') && 
-                (board[1][2] == player || board[1][2] == 'X') && 
-                (board[2][1] == player || board[2][1] == 'X') && 
-                (board[3][0] == player || board[3][0] == 'X')) || 
-            
-               ((board[3][0] == player || board[3][0] == 'X') && 
-                (board[3][1] == player || board[3][1] == 'X') && 
-                (board[3][2] == player || board[3][2] == 'X') && 
-                (board[3][3] == player || board[3][3] == 'X')))
-                {
-                    over = player - '0';
-                    break;
-                }
-        }
-    }
 
     return over;
 }
