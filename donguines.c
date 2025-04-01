@@ -1,9 +1,14 @@
+// Donguines, Jon Chester C.    S27
+// CCDSTRU Machine Project
+
 #include <stdio.h>
 #include <conio.h>
 #define SIZE 4
 #define CLS "\033[H\033[J\033[3J"
 
 // Initializes the board to be empty
+//
+// @param board     array containing the positions taken
 void initBoard(char board[][SIZE])
 {
     int i, j;
@@ -24,6 +29,8 @@ void displayTitle()
 }
 
 // Displays the board and positions of players
+//
+// @param board     array containing the positions taken
 void displayBoard(char board[][SIZE])
 {
     int i, j;
@@ -66,7 +73,12 @@ void displayBoard(char board[][SIZE])
     printf("\n");
 }
 
-// Gets row and column from user and checks if it is valid for the player type
+// Gets row and column from user and checks if it is valid
+//
+// @param board     array containing the positions taken
+// @param row       address to store the player's row to
+// @param col       address to store the player's column to
+// @param player    the current player picking a position
 void getPos(char board[][SIZE], int *row, int *col, int player)
 {
     int valid = 0;
@@ -75,6 +87,7 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
 
     while(!valid)
     {
+        // Ask user for row
         error = 0;
         do
         {
@@ -90,6 +103,7 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
         }    
         while(rowTemp < 1 || rowTemp > SIZE);
 
+        // Ask user for column
         error = 0;
         do
         {
@@ -120,6 +134,8 @@ void getPos(char board[][SIZE], int *row, int *col, int player)
 }
 
 // Checks if the game is over by comparing the board to the patterns
+//
+// @param board     array containing the positions taken
 int isGameOver(char board[][SIZE])
 {
     int i, j;
@@ -168,6 +184,8 @@ int isGameOver(char board[][SIZE])
 }
 
 // Main game function
+//
+// @param board     array containing the positions taken
 int play(char board[][SIZE])
 {
     int row = 1;
